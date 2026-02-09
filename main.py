@@ -1,3 +1,4 @@
+#Edited
 # main.py
 # -*- coding: utf-8 -*-
 
@@ -38,18 +39,22 @@ def load_module(py_path: Path, name: str):
 def run_step1():
     print("\n===== STEP 1: Extract & clean plan names =====")
 
-    form5500_csv = Path("/Users/xialinyi/Desktop/f_5500_2024_all.csv")
+
+    form5500_csv = Path("f_5500_2024_all.csv")
+
     if not form5500_csv.exists():
         raise FileNotFoundError("form5500.csv not found in project directory")
 
     step1_script = Path("Get_data.py")
+
+
     if not step1_script.exists():
         raise FileNotFoundError("Get_data.py not found")
 
     mod = load_module(step1_script, "get_data")
 
-    mod.process_form5500(str(form5500_csv))  # type: ignore
-
+    mod.process_form5500(str(form5500_csv)) 
+    
     out_csv = Path("filtered_401k_403b_plans.csv")
     if not out_csv.exists():
         raise RuntimeError("STEP 1 failed: output CSV not generated")
@@ -61,14 +66,14 @@ def run_step1():
 def run_step2():
     print("\n===== STEP 2: Search & download on efast =====")
 
-    step2_script = Path("MPS Capstone Project - Automating to web and searching by plan.py")
+    base_dir = Path(__file__).resolve().parent
+    step2_script = base_dir / "Searching and Downloading.py"
     if not step2_script.exists():
-        raise FileNotFoundError("Step 2 script not found")
+        raise FileNotFoundError(f"Step 2 script not found: {step2_script}")
 
-    # run it directly, no arguments
-    subprocess.run([sys.executable, str(step2_script)], check=False)
-
+    subprocess.run([sys.executable, str(step2_script)], cwd=str(base_dir), check=True)
     print("STEP 2 finished (check browser / downloads).")
+
 
 
 # ---------- MAIN ----------
