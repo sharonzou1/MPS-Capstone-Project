@@ -150,7 +150,8 @@ def clear_plan_name_only(driver, wait, retries=2):
 
 
 data_file = "filtered_401k_403b_plans.csv"
-df = pd.read_csv(data_file,nrows=10)
+#df = pd.read_csv(data_file,nrows=100)
+df = pd.read_csv(data_file, skiprows=range(1,101), nrows=350)
 plan_names = df['Full_Plan_Name'].dropna().tolist()
 
 for plan in plan_names:
